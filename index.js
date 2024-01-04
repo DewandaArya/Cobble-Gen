@@ -1,4 +1,3 @@
-/*
 const express = require('express');
 const app = express();
 
@@ -9,7 +8,7 @@ app.get('/', async function(req, res) {
 app.listen(3000, async function() {
 	console.log('Example app listening on port 3000!');
 });
-*/
+
 const ReplCraft = require('replcraft');
 /* const Discord = require('discord.js');
 
@@ -45,8 +44,16 @@ dc.login(process.env.dcToken); */
 
 	try {
 		await client.login(process.env.token);
-		await client.setBlock(2, 0, 1, 'minecraft:air');
+		client.poll(3, 1, 0);
+		client.poll(3, 1, 1);
+		client.poll(3, 1, 2);
+
+		client.on('block update', async (cause, block, x, y, z) => {
+			if (block === 'minecraft:cobblestone') {
+				client.setBlock(x, y, z, 'minecraft:air');
+			};
+		});
 	} catch (error) {
 		console.error(error);
 	};
-});
+})();
